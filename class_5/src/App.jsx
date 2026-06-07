@@ -1,32 +1,70 @@
-import { useState } from 'react'
-import React from 'react'
+import React, { useState } from 'react'
+import Card from './Card'
 
 const App = () => {
-    let [marks, setMarks] = useState([45,676,34,223,34,56,78,90])
-    
-    function graceMarks(){
-        let updatedMarks = marks.map((mark, idx) => {
-            if(mark < 50){
-                console.log(`marks changed for student ${idx + 1}`)
-                return mark + 10
-            }
-            return mark
-        })
-        setMarks(updatedMarks)
-    }
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [image, setImage] = useState("");
+
+  function submitHandler(e) {
+    e.preventDefault();
+    const newUser = {name, email, phone, image};
+    setAllUsers([...allusers, newUser]);
+    setName("");
+    setEmail("");
+    setPhone("");
+    setImage("");
+  }
+
+  function deleteHandler(index) {
+    const oldUsers = [...allusers];
+    oldUsers.splice(index, 1);
+    setAllUsers(oldUsers);
+  }
+
+  const[allusers, setAllUsers] = useState([{name, email, phone, image}]);
+  
   return (
-    <div>
-        <h1 className='text-2xl font-bold underline m-10'>
-            Student Marks
-        </h1>
-        <div>
-            {marks.map((mark, idx) => {
-                return <h2 key = {idx}> student {idx + 1}= {mark}</h2>
-            })}
-        </div>
-        <button className="bg-blue-500 m-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={graceMarks}>
-            Apply Grace Marks
-        </button>
+    <div className='h-screen w-screen flex flex-col gap-8'>
+      <form onSubmit={(e) => {
+        submitHandler(e)
+      }} className='px-2 py-2 w-full flex flex-wrap mt-5 justify-center items-center gap-5'>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="enter new persons Name"
+          className='mr-5 mb-5 px-2 py-2 border-2 border-gray-300 rounded-lg'
+        />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="enter new persons Email"
+          className='mr-5 mb-5 px-2 py-2 border-2 border-gray-300 rounded-lg'
+        />
+        <input
+          type="text"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="enter new persons Phone"
+          className='mr-5 mb-5 px-2 py-2 border-2 border-gray-300 rounded-lg'
+        />
+        <input
+          type="text"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          placeholder="enter new persons Image URL"
+          className='mr-5 mb-5 px-2 py-2 border-2 border-gray-300 rounded-lg'
+        />
+        <button className=' px-5 py-2 text-xl active:scale-95 cursor-pointer font-semibold bg-emerald-700 rounded m-2 w-[97%]' type="submit">Create User</button>
+      </form>
+      <div className='flex flex-wrap justify-center items-center gap-5'>
+        {allusers.map((user, index) => {
+          return <Card key={index} name={user.name} email={user.email} phone={user.phone} image={user.image} onDelete={() => deleteHandler(index)}/>
+        })}
+      </div>
     </div>
   )
 }
