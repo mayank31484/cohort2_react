@@ -10,20 +10,30 @@ const App = () => {
   function submitHandler(e) {
     e.preventDefault();
     const newUser = {name, email, phone, image};
-    setAllUsers([...allusers, newUser]);
+    setAllUsers([...allUsers, newUser]);
+    localStorage.setItem("all-users", JSON.stringify([...allUsers, newUser]));
+
     setName("");
     setEmail("");
     setPhone("");
     setImage("");
   }
-
+  
   function deleteHandler(index) {
-    const oldUsers = [...allusers];
-    oldUsers.splice(index, 1);
-    setAllUsers(oldUsers);
+    const oldUsers = [...allUsers];
+    const conf = confirm("DO you really want to delete this contact?");
+    if (conf) {
+      oldUsers.splice(index, 1);
+      setAllUsers(oldUsers);
+      localStorage.setItem("all-users", JSON.stringify(oldUsers));
+    }else{ console.log("deletion cancelled");
+      alert("deletion cancelled for index: " + index);
+     }
   }
 
-  const[allusers, setAllUsers] = useState([{name, email, phone, image}]);
+  const localData = JSON.parse(localStorage.getItem('all-users')) || []
+
+   const [allUsers, setAllUsers] = useState(localData);
   
   return (
     <div className='h-screen w-screen flex flex-col gap-8'>
@@ -61,8 +71,9 @@ const App = () => {
         <button className=' px-5 py-2 text-xl active:scale-95 cursor-pointer font-semibold bg-emerald-700 rounded m-2 w-[97%]' type="submit">Create User</button>
       </form>
       <div className='flex flex-wrap justify-center items-center gap-5'>
-        {allusers.map((user, index) => {
-          return <Card key={index} name={user.name} email={user.email} phone={user.phone} image={user.image} onDelete={() => deleteHandler(index)}/>
+        
+        {allUsers.map((user, index) => {
+          return <Card key={index} user={user} onDelete={() => deleteHandler(index)}/>
         })}
       </div>
     </div>
