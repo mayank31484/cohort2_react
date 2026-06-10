@@ -18,3 +18,13 @@ html, body{
   gap: 40px;
   flex-wrap: wrap;
 }
+
+h1 {
+  position: fixed;
+  left: 50vw;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 700;
+  text-decoration: underline;
+}

@@ -7,3 +7,10 @@ h1{
   height: 200px;
   padding: 20px;
 }
+
+.home{
+  background-color: #3b3b3b;
+  color: white;
+  text-align: center;
+  transform: translateY(50%);
+}
